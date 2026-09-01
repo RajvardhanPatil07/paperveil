@@ -1,0 +1,94 @@
+{
+  "id": "PV-2026-042",
+  "title": "Outpatient imaging appeal",
+  "status": "reviewing",
+  "insurer": "Northstar Health (fictional)",
+  "claimAmount": 4200,
+  "denialCode": "CO-16",
+  "denialReason": "Missing or incomplete information",
+  "appealDeadline": "2026-10-18",
+  "rawIdentifiers": {
+    "patient_name": "Maya Chen",
+    "date_of_birth": "1988-04-12",
+    "member_id": "NSH-8841-2937",
+    "address": "18 Linden Street, Portland, OR 97205"
+  },
+  "tokens": {
+    "patient_name": "[[NAME]]",
+    "date_of_birth": "[[DOB]]",
+    "member_id": "[[MEMBER_ID]]",
+    "address": "[[ADDRESS]]"
+  },
+  "documents": [
+    {
+      "id": "doc-eob",
+      "kind": "eob",
+      "title": "Explanation of benefits",
+      "receivedAt": "2026-08-22",
+      "pages": 3,
+      "summary": "EOB for [[NAME]] lists a $4,200 imaging claim and $2,300 patient responsibility.",
+      "present": true
+    },
+    {
+      "id": "doc-denial",
+      "kind": "denial_letter",
+      "title": "Claim denial notice",
+      "receivedAt": "2026-08-24",
+      "pages": 2,
+      "summary": "Denial code CO-16 cites missing or incomplete supporting information.",
+      "present": true
+    },
+    {
+      "id": "doc-referral",
+      "kind": "referral",
+      "title": "Specialist referral",
+      "receivedAt": "2026-08-25",
+      "pages": 1,
+      "summary": "Referral covers the service date but the synthetic copy has no provider signature.",
+      "present": true
+    },
+    {
+      "id": "doc-itemized",
+      "kind": "itemized_bill",
+      "title": "Itemized provider bill",
+      "receivedAt": "",
+      "pages": 0,
+      "summary": "Not yet obtained.",
+      "present": false
+    }
+  ],
+  "lineItems": [
+    {
+      "id": "line-1",
+      "serviceDate": "2026-07-11",
+      "code": "72148",
+      "description": "MRI lumbar spine without contrast",
+      "billed": 2500,
+      "allowed": 1650,
+      "patientOwes": 1450
+    },
+    {
+      "id": "line-2",
+      "serviceDate": "2026-07-11",
+      "code": "72148-TC",
+      "description": "Technical component",
+      "billed": 850,
+      "allowed": 0,
+      "patientOwes": 850,
+      "suspectedDuplicate": true
+    },
+    {
+      "id": "line-3",
+      "serviceDate": "2026-07-11",
+      "code": "99204",
+      "description": "New patient consultation",
+      "billed": 850,
+      "allowed": 600,
+      "patientOwes": 0
+    }
+  ],
+  "ruleResults": [],
+  "scenarios": [],
+  "draft": null,
+  "ledger": []
+}

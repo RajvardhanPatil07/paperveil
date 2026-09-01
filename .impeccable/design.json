@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-01T20:28:18Z",
+  "title": "Design System: PaperVeil",
+  "extensions": {
+    "colorMeta": {
+      "paper": { "role": "neutral", "displayName": "Desk Paper", "canonical": "#f3f0e8", "tonalRamp": ["oklch(15% 0.012 88)", "oklch(27% 0.012 88)", "oklch(39% 0.012 88)", "oklch(51% 0.012 88)", "oklch(63% 0.012 88)", "oklch(75% 0.012 88)", "oklch(87% 0.012 88)", "oklch(95% 0.012 88)"] },
+      "paper-bright": { "role": "neutral", "displayName": "Bright Record Paper", "canonical": "#fffdf7", "tonalRamp": ["oklch(15% 0.008 88)", "oklch(27% 0.008 88)", "oklch(39% 0.008 88)", "oklch(51% 0.008 88)", "oklch(63% 0.008 88)", "oklch(75% 0.008 88)", "oklch(87% 0.008 88)", "oklch(95% 0.008 88)"] },
+      "paper-deep": { "role": "neutral", "displayName": "Deep Paper", "canonical": "#e9e4d8", "tonalRamp": ["oklch(15% 0.014 85)", "oklch(27% 0.014 85)", "oklch(39% 0.014 85)", "oklch(51% 0.014 85)", "oklch(63% 0.014 85)", "oklch(75% 0.014 85)", "oklch(87% 0.014 85)", "oklch(95% 0.014 85)"] },
+      "ink": { "role": "neutral", "displayName": "Evidence Ink", "canonical": "#172126", "tonalRamp": ["oklch(15% 0.014 220)", "oklch(27% 0.014 220)", "oklch(39% 0.014 220)", "oklch(51% 0.014 220)", "oklch(63% 0.014 220)", "oklch(75% 0.014 220)", "oklch(87% 0.014 220)", "oklch(95% 0.014 220)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#526067", "tonalRamp": ["oklch(15% 0.016 220)", "oklch(27% 0.016 220)", "oklch(39% 0.016 220)", "oklch(51% 0.016 220)", "oklch(63% 0.016 220)", "oklch(75% 0.016 220)", "oklch(87% 0.016 220)", "oklch(95% 0.016 220)"] },
+      "ink-faint": { "role": "neutral", "displayName": "Faint Ink", "canonical": "#768187", "tonalRamp": ["oklch(15% 0.012 220)", "oklch(27% 0.012 220)", "oklch(39% 0.012 220)", "oklch(51% 0.012 220)", "oklch(63% 0.012 220)", "oklch(75% 0.012 220)", "oklch(87% 0.012 220)", "oklch(95% 0.012 220)"] },
+      "line": { "role": "neutral", "displayName": "Rule Line", "canonical": "#d2cec2", "tonalRamp": ["oklch(15% 0.010 85)", "oklch(27% 0.010 85)", "oklch(39% 0.010 85)", "oklch(51% 0.010 85)", "oklch(63% 0.010 85)", "oklch(75% 0.010 85)", "oklch(87% 0.010 85)", "oklch(95% 0.010 85)"] },
+      "line-dark": { "role": "neutral", "displayName": "Dark Rule Line", "canonical": "#aeb1aa", "tonalRamp": ["oklch(15% 0.008 140)", "oklch(27% 0.008 140)", "oklch(39% 0.008 140)", "oklch(51% 0.008 140)", "oklch(63% 0.008 140)", "oklch(75% 0.008 140)", "oklch(87% 0.008 140)", "oklch(95% 0.008 140)"] },
+      "diagnostic-coral": { "role": "primary", "displayName": "Diagnostic Coral", "canonical": "#e35e46", "tonalRamp": ["oklch(15% 0.16 35)", "oklch(27% 0.16 35)", "oklch(39% 0.16 35)", "oklch(51% 0.16 35)", "oklch(63% 0.16 35)", "oklch(75% 0.16 35)", "oklch(87% 0.16 35)", "oklch(95% 0.16 35)"] },
+      "diagnostic-coral-deep": { "role": "primary", "displayName": "Deep Diagnostic Coral", "canonical": "#a93625", "tonalRamp": ["oklch(15% 0.15 35)", "oklch(27% 0.15 35)", "oklch(39% 0.15 35)", "oklch(51% 0.15 35)", "oklch(63% 0.15 35)", "oklch(75% 0.15 35)", "oklch(87% 0.15 35)", "oklch(95% 0.15 35)"] },
+      "diagnostic-coral-wash": { "role": "primary", "displayName": "Diagnostic Wash", "canonical": "#fae2da", "tonalRamp": ["oklch(15% 0.035 35)", "oklch(27% 0.035 35)", "oklch(39% 0.035 35)", "oklch(51% 0.035 35)", "oklch(63% 0.035 35)", "oklch(75% 0.035 35)", "oklch(87% 0.035 35)", "oklch(95% 0.035 35)"] },
+      "verified-mint": { "role": "tertiary", "displayName": "Verified Mint", "canonical": "#dfece3", "tonalRamp": ["oklch(15% 0.045 155)", "oklch(27% 0.045 155)", "oklch(39% 0.045 155)", "oklch(51% 0.045 155)", "oklch(63% 0.045 155)", "oklch(75% 0.045 155)", "oklch(87% 0.045 155)", "oklch(95% 0.045 155)"] },
+      "verified-mint-deep": { "role": "tertiary", "displayName": "Deep Verified Mint", "canonical": "#246248", "tonalRamp": ["oklch(15% 0.08 155)", "oklch(27% 0.08 155)", "oklch(39% 0.08 155)", "oklch(51% 0.08 155)", "oklch(63% 0.08 155)", "oklch(75% 0.08 155)", "oklch(87% 0.08 155)", "oklch(95% 0.08 155)"] },
+      "inspection-amber": { "role": "tertiary", "displayName": "Inspection Amber", "canonical": "#f0bd5e", "tonalRamp": ["oklch(15% 0.13 80)", "oklch(27% 0.13 80)", "oklch(39% 0.13 80)", "oklch(51% 0.13 80)", "oklch(63% 0.13 80)", "oklch(75% 0.13 80)", "oklch(87% 0.13 80)", "oklch(95% 0.13 80)"] },
+      "custody-navy": { "role": "secondary", "displayName": "Custody Navy", "canonical": "#112d38", "tonalRamp": ["oklch(15% 0.045 220)", "oklch(27% 0.045 220)", "oklch(39% 0.045 220)", "oklch(51% 0.045 220)", "oklch(63% 0.045 220)", "oklch(75% 0.045 220)", "oklch(87% 0.045 220)", "oklch(95% 0.045 220)"] },
+      "custody-navy-soft": { "role": "secondary", "displayName": "Soft Custody Navy", "canonical": "#244653", "tonalRamp": ["oklch(15% 0.04 220)", "oklch(27% 0.04 220)", "oklch(39% 0.04 220)", "oklch(51% 0.04 220)", "oklch(63% 0.04 220)", "oklch(75% 0.04 220)", "oklch(87% 0.04 220)", "oklch(95% 0.04 220)"] },
+      "focus-blue": { "role": "tertiary", "displayName": "Focus Blue", "canonical": "#277291", "tonalRamp": ["oklch(15% 0.09 230)", "oklch(27% 0.09 230)", "oklch(39% 0.09 230)", "oklch(51% 0.09 230)", "oklch(63% 0.09 230)", "oklch(75% 0.09 230)", "oklch(87% 0.09 230)", "oklch(95% 0.09 230)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Case Display", "purpose": "Main case title on the evidence desk." },
+      "headline": { "displayName": "Decision Headline", "purpose": "Strategy, packet, and human-gate decisions." },
+      "title": { "displayName": "Formal Title", "purpose": "Brand, ledger, pane, and numeric summary headings." },
+      "body": { "displayName": "Operational Body", "purpose": "Explanations, instructions, and evidence summaries." },
+      "label": { "displayName": "Evidence Label", "purpose": "States, counts, provenance, and control text." },
+      "code": { "displayName": "Machine Evidence", "purpose": "Tokens, hashes, timestamps, JSON receipts, and returned bytes." }
+    },
+    "shadows": [
+      { "name": "raised-paper", "value": "0 14px 35px rgba(27, 35, 36, 0.11), 0 3px 8px rgba(27, 35, 36, 0.06)", "purpose": "Claim sheets and personalized letter previews." },
+      { "name": "scenario-lift", "value": "0 10px 26px rgba(30, 38, 39, 0.08)", "purpose": "Scenario comparison panel." },
+      { "name": "action-dark", "value": "0 5px 12px rgba(17, 45, 56, 0.17)", "purpose": "Dark operational buttons." },
+      { "name": "action-coral", "value": "0 5px 12px rgba(182, 61, 42, 0.18)", "purpose": "Consequential coral actions." },
+      { "name": "gate-lift", "value": "0 24px 70px rgba(7, 18, 22, 0.3)", "purpose": "Human disclosure and export gate only." }
+    ],
+    "motion": [
+      { "name": "control-response", "value": "180ms ease-out", "purpose": "Button lift, color, and shadow response." },
+      { "name": "panel-entry", "value": "450ms cubic-bezier(0.2, 0.8, 0.2, 1)", "purpose": "Single view transition with an 8px rise and brief blur." },
+      { "name": "gate-entry", "value": "200ms ease-out", "purpose": "Disclosure backdrop fade-in." },
+      { "name": "toggle-state", "value": "200ms", "purpose": "Local-reveal track and thumb state." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Effectively removes animations and transitions when reduced motion is requested." }
+    ],
+    "breakpoints": [
+      { "name": "compact-rails", "value": "1180px" },
+      { "name": "stacked-workspace", "value": "960px" },
+      { "name": "mobile", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Dark Operational Button",
+      "kind": "button",
+      "refersTo": "button-dark",
+      "description": "Runs checks, creates drafts, or confirms a gated action.",
+      "html": "<button class=\"ds-btn ds-btn-dark\">RUN RULE CHECK</button>",
+      "css": ".ds-btn { min-height:39px; padding:0 15px; border:0; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:transform .18s ease-out,background-color .18s ease-out,box-shadow .18s ease-out; } .ds-btn-dark { background:var(--navy,#112d38); color:#fff; box-shadow:0 5px 12px rgba(17,45,56,.17); } .ds-btn-dark:hover { background:var(--navy-soft,#244653); transform:translateY(-1px); } .ds-btn-dark:active { transform:translateY(0); } .ds-btn-dark:focus-visible { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Coral Consequential Button",
+      "kind": "button",
+      "refersTo": "button-coral",
+      "description": "Prepares or exports the appeal packet.",
+      "html": "<button class=\"ds-btn ds-btn-coral\">PREPARE APPEAL PACKET</button>",
+      "css": ".ds-btn { min-height:39px; padding:0 15px; border:0; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:transform .18s ease-out,background-color .18s ease-out,box-shadow .18s ease-out; } .ds-btn-coral { background:var(--coral,#e35e46); color:#fff; box-shadow:0 5px 12px rgba(182,61,42,.18); } .ds-btn-coral:hover { background:var(--coral-deep,#a93625); transform:translateY(-1px); } .ds-btn-coral:active { transform:translateY(0); } .ds-btn-coral:focus-visible { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Outline Comparison Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "A lower-priority control for scenario comparison and secondary operations.",
+      "html": "<button class=\"ds-btn-outline\">COMPARE TWO PATHS</button>",
+      "css": ".ds-btn-outline { min-height:39px; padding:0 15px; border:1px solid var(--line-dark,#aeb1aa); border-radius:9px; background:transparent; color:var(--ink,#172126); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:transform .18s ease-out,background-color .18s ease-out; } .ds-btn-outline:hover { background:var(--paper-bright,#fffdf7); transform:translateY(-1px); } .ds-btn-outline:active { transform:translateY(0); } .ds-btn-outline:focus-visible { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Workflow Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Compact navy workflow navigation with a paper reversal for the current view.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Case workflow\"><button>Case desk</button><button class=\"ds-active\">Strategy</button><button>Packet</button></nav>",
+      "css": ".ds-nav { width:176px; padding:8px; display:grid; gap:4px; background:var(--navy,#112d38); } .ds-nav button { min-height:43px; padding:0 11px; border:0; border-radius:8px; background:transparent; color:#aec1c5; text-align:left; font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; } .ds-nav button:hover { color:#fff; background:rgba(255,255,255,.055); } .ds-nav button.ds-active { background:var(--paper-deep,#e9e4d8); color:var(--navy,#112d38); } .ds-nav button:focus-visible { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Diagnostic Strip",
+      "kind": "custom",
+      "refersTo": "diagnostic-strip",
+      "description": "A plain-language defect alert paired with the next operational action.",
+      "html": "<section class=\"ds-diagnostic\"><span class=\"ds-diagnostic-mark\">!</span><div><strong>2 procedural issues need attention</strong><p>The strongest specific defect is an unreconciled technical component.</p></div></section>",
+      "css": ".ds-diagnostic { display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:center; padding:15px 16px; border:1px solid #e4b5a8; border-radius:12px; background:var(--coral-wash,#fae2da); color:var(--ink,#172126); font-family:'DM Sans',sans-serif; } .ds-diagnostic-mark { width:37px; height:37px; display:grid; place-items:center; border-radius:8px; background:#fff3ee; color:var(--coral-deep,#a93625); font-weight:700; } .ds-diagnostic strong { font-size:13px; } .ds-diagnostic p { margin:3px 0 0; color:#734a42; font-size:12px; } .ds-diagnostic:focus-within { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Claim Record Sheet",
+      "kind": "card",
+      "refersTo": "claim-sheet",
+      "description": "A raised, slightly handled paper artifact for tokenized claim evidence.",
+      "html": "<article class=\"ds-claim\"><header>EXPLANATION OF BENEFITS <small>SYNTHETIC RECORD</small></header><p>Patient <code>[[NAME]]</code></p><div class=\"ds-stamp\"><b>M51</b> INCOMPLETE</div></article>",
+      "css": ".ds-claim { width:280px; padding:18px; position:relative; transform:rotate(.25deg); border:1px solid #c8c3b5; background:var(--paper-bright,#fffdf7); color:var(--ink,#172126); box-shadow:0 14px 35px rgba(27,35,36,.11),0 3px 8px rgba(27,35,36,.06); font-family:'DM Sans',sans-serif; font-size:10px; } .ds-claim header { display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:2px solid var(--ink,#172126); letter-spacing:.12em; font-weight:600; } .ds-claim small { color:var(--coral-deep,#a93625); } .ds-claim p { display:flex; justify-content:space-between; } .ds-claim code { color:var(--focus,#277291); font-weight:600; } .ds-stamp { padding:9px; border:1px solid var(--coral,#e35e46); color:var(--coral-deep,#a93625); transform:rotate(-1deg); letter-spacing:.13em; } .ds-stamp b { margin-right:9px; font-family:'Newsreader',serif; font-size:26px; letter-spacing:0; }"
+    },
+    {
+      "name": "Disclosure Ledger Counter",
+      "kind": "custom",
+      "refersTo": "ledger-counter",
+      "description": "The primary chain-of-custody count for released raw identifiers.",
+      "html": "<section class=\"ds-ledger-counter\"><strong>0</strong><span>of 4 raw identifiers released</span></section>",
+      "css": ".ds-ledger-counter { width:145px; min-height:92px; padding:10px; border:1px solid var(--navy,#112d38); background:var(--navy,#112d38); color:#fff; font-family:'DM Sans',sans-serif; } .ds-ledger-counter strong { display:block; margin:7px 0 3px; font-family:'Newsreader',serif; font-size:25px; line-height:1; font-variant-numeric:tabular-nums; } .ds-ledger-counter span { display:block; color:#9fb4b9; font-size:9px; line-height:1.35; } .ds-ledger-counter:hover { background:var(--navy-soft,#244653); } .ds-ledger-counter:focus-within { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; }"
+    },
+    {
+      "name": "Human Disclosure Gate",
+      "kind": "custom",
+      "refersTo": "gate-dialog",
+      "description": "A consequential human decision surface with reassurance and fail-closed timing.",
+      "html": "<section class=\"ds-gate\" role=\"dialog\" aria-label=\"Identity disclosure requested\"><p class=\"ds-gate-context\">IDENTITY DISCLOSURE REQUESTED</p><h2>The agent can continue without this.</h2><div class=\"ds-gate-boundary\">Denying returns a placeholder token. Your workflow will not stop.</div><div class=\"ds-gate-actions\"><button>Deny · use token</button><button class=\"ds-gate-allow\">Allow once</button></div><small>Auto-denies in 20s</small></section>",
+      "css": ".ds-gate { width:min(470px,100%); padding:29px; border-top:5px solid var(--coral,#e35e46); background:var(--paper-bright,#fffdf7); color:var(--ink,#172126); box-shadow:0 24px 70px rgba(7,18,22,.3); font-family:'DM Sans',sans-serif; } .ds-gate-context { margin:0 0 8px; color:var(--coral-deep,#a93625); font-size:9px; font-weight:600; letter-spacing:.1em; } .ds-gate h2 { margin:0 0 12px; max-width:370px; font-family:'Newsreader',serif; font-size:31px; line-height:1.05; letter-spacing:-.025em; } .ds-gate-boundary { margin:18px 0; padding:12px; background:var(--mint,#dfece3); color:#244d3b; font-size:10px; } .ds-gate-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; } .ds-gate button { min-height:39px; border:0; border-radius:9px; background:var(--paper-deep,#e9e4d8); color:var(--ink,#172126); font-weight:600; cursor:pointer; } .ds-gate button:hover { transform:translateY(-1px); } .ds-gate button:focus-visible { outline:3px solid color-mix(in srgb,var(--focus,#277291) 35%,transparent); outline-offset:3px; } .ds-gate button.ds-gate-allow { background:var(--navy,#112d38); color:#fff; } .ds-gate small { display:block; margin-top:13px; text-align:center; color:var(--ink-faint,#768187); font-size:9px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clinical Evidence Light Table",
+    "overview": "PaperVeil is an operations workspace built from the visual language of an evidence room: paper-white records sit on a warm archival surface, deep ink and navy establish custody and structure, and diagnostic coral marks defects that require human attention. The interface is clinical without becoming sterile and editorial without becoming ornamental.\n\nThe system is deliberately information-dense. Compact labels, ruled rows, ledger entries, tabular figures, and visible document edges make state inspectable at a glance. Newsreader gives claims, amounts, and decision moments the gravity of a formal record; DM Sans carries operational controls and explanations; monospace is reserved for tokens, receipts, and exact tool output.",
+    "keyCharacteristics": [
+      "Paper-white material layered over warm archival neutrals.",
+      "Deep navy frames privacy boundaries and chain-of-custody evidence.",
+      "Diagnostic coral is scarce, consequential, and tied to defects or decisive actions.",
+      "Compact, ruled information architecture favors scanning over dashboard decoration.",
+      "A narrow disclosure ledger remains visually distinct from the central workbench."
+    ],
+    "rules": [
+      { "name": "The Marked-Evidence Rule", "body": "Coral signals a defect, a disclosure state, or a consequential action; it is never ambient brand decoration.", "section": "colors" },
+      { "name": "The Custody Boundary Rule", "body": "Navy surfaces identify where tools, privacy, and agent-visible evidence are being discussed.", "section": "colors" },
+      { "name": "The Human–Machine Split Rule", "body": "Serif type names the case and its decisions; monospace proves what the system stored or returned; sans-serif connects the two.", "section": "typography" },
+      { "name": "The Narrow Ledger Rule", "body": "Chain-of-custody proof remains visually narrower than the workbench on desktop and becomes a dedicated section—not an overlay—on small screens.", "section": "layout" },
+      { "name": "The Evidence-Only Elevation Rule", "body": "Raise papers, proof panels, and human gates; leave navigation rows and ordinary lists flat.", "section": "elevation" },
+      { "name": "The Paper Before Card Rule", "body": "If content can read as a ruled row or record sheet, do not place it in a generic rounded card.", "section": "shapes" }
+    ],
+    "dos": [
+      "**Do** keep paper and ink dominant so evidence, not chrome, owns the screen.",
+      "**Do** reserve coral for defects, disclosure state, and consequential workflow actions.",
+      "**Do** expose exact provenance through compact labels, byte counts, timestamps, tokens, and receipts.",
+      "**Do** use ruled rows and document sheets before introducing another card.",
+      "**Do** preserve the three-way distinction between human-facing prose, formal record type, and machine evidence.",
+      "**Do** collapse the desktop rails into a bottom workflow bar and dedicated ledger section on narrow screens."
+    ],
+    "donts": [
+      "**Don't** turn PaperVeil into a generic rounded-card dashboard or a bright clinical SaaS template.",
+      "**Don't** use coral as a decorative brand fill across large passive surfaces.",
+      "**Don't** imply that privacy or completion is trustworthy without showing the underlying ledger, token, state, or receipt.",
+      "**Don't** place raw identity inside agent-facing navy/code surfaces.",
+      "**Don't** use heavy shadows on ordinary rows, navigation items, or static containers.",
+      "**Don't** hide critical state behind hover, animation, or color alone."
+    ]
+  }
+}
