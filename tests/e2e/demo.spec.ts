@@ -24,6 +24,26 @@ test("completes the seeded privacy-first appeal workflow", async ({ page }) => {
   await expect(page.locator(".ledger-entry").first()).toContainText("denied");
 });
 
+test("requires confirmation before resetting demo state", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "reset control is hidden in the mobile bottom-nav layout");
+  await page.goto("/");
+  await page.getByRole("button", { name: /run rule check/i }).click();
+  await expect(page.locator(".ledger-footer")).toContainText("1 calls recorded");
+
+  const resetButton = page.getByRole("button", { name: /Reset demo/i });
+  await resetButton.click();
+  await expect(page.getByRole("button", { name: /Confirm reset/i })).toBeVisible();
+
+  // Leaving the armed state without confirming keeps the recorded state.
+  await page.getByRole("button", { name: "Strategy" }).click();
+  await expect(page.getByRole("button", { name: /Reset demo/i })).toBeVisible();
+  await expect(page.locator(".ledger-footer")).toContainText("1 calls recorded");
+
+  await resetButton.click();
+  await page.getByRole("button", { name: /Confirm reset/i }).click();
+  await expect(page.locator(".ledger-footer")).toContainText("0 calls recorded");
+});
+
 test("remains usable on a narrow viewport", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile", "mobile-only layout assertion");
   await page.goto("/");

@@ -18,6 +18,18 @@ export function GateDialog({ gate, onClose }: { gate: PendingGate | null; onClos
     return () => window.clearInterval(timer);
   }, [gate, onClose]);
 
+  useEffect(() => {
+    if (!gate) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        gate.resolve("denied");
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [gate, onClose]);
+
   if (!gate) return null;
   const disclosure = gate.kind === "disclosure";
 

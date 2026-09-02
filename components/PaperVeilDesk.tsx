@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -43,6 +43,8 @@ export function PaperVeilDesk() {
   const [toolCount, setToolCount] = useState(0);
   const [copied, setCopied] = useState(false);
   const [revealLocal, setRevealLocal] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const resetTimer = useRef<number | null>(null);
 
   const refresh = useCallback(async () => setCaseData(await loadDemoCase()), []);
   const closeGate = useCallback(() => setGate(null), []);
@@ -51,6 +53,13 @@ export function PaperVeilDesk() {
     void refresh();
     return subscribeToState(() => void refresh());
   }, [refresh]);
+
+  useEffect(
+    () => () => {
+      if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => subscribeToHumanGate(setGate), []);
 
@@ -67,6 +76,7 @@ export function PaperVeilDesk() {
   const localView = caseData.draft ? rehydrateTokens(caseData.draft.tokenizedText, caseData.rawIdentifiers) : modelView;
 
   const runAction = async (name: string, action: () => Promise<unknown>, nextView?: View) => {
+    disarmReset();
     setBusy(name);
     try {
       await action();
@@ -92,11 +102,30 @@ export function PaperVeilDesk() {
   }));
   const exportPacket = () => runAction("export", () => browserToolHandlers.export_packet({ format: "txt" }));
 
+  const disarmReset = useCallback(() => {
+    if (resetTimer.current !== null) {
+      window.clearTimeout(resetTimer.current);
+      resetTimer.current = null;
+    }
+    setConfirmReset(false);
+  }, []);
+
   const reset = async () => {
+    if (!confirmReset) {
+      setConfirmReset(true);
+      resetTimer.current = window.setTimeout(disarmReset, 4000);
+      return;
+    }
+    disarmReset();
     await resetDemoCase();
     setView("desk");
     setRevealLocal(false);
     await refresh();
+  };
+
+  const navigate = (nextView: View) => {
+    if (confirmReset) disarmReset();
+    setView(nextView);
   };
 
   const copyPrompt = async () => {
@@ -121,7 +150,12 @@ export function PaperVeilDesk() {
 
         <nav aria-label="Case workflow">
           {nav.map((item) => (
-            <button key={item.id} className={view === item.id ? "active" : ""} onClick={() => setView(item.id)}>
+            <button
+              key={item.id}
+              className={view === item.id ? "active" : ""}
+              onClick={() => navigate(item.id)}
+              aria-current={view === item.id ? "page" : undefined}
+            >
               <item.icon size={18} />
               <span>{item.label}</span>
               {item.id === "packet" && caseData.draft ? <Check size={15} className="nav-check" /> : null}
@@ -134,7 +168,9 @@ export function PaperVeilDesk() {
           <strong>Local vault</strong>
           <p>Raw identity stays in this browser until you approve one field.</p>
         </div>
-        <button className="reset-button" onClick={reset}><RotateCcw size={15} /> Reset demo</button>
+        <button className={`reset-button${confirmReset ? " armed" : ""}`} onClick={reset}>
+          {confirmReset ? <TriangleAlert size={15} /> : <RotateCcw size={15} />}{confirmReset ? "Confirm reset?" : "Reset demo"}
+        </button>
       </aside>
 
       <section className="workbench">
@@ -145,6 +181,7 @@ export function PaperVeilDesk() {
               <span /> {toolCount ? `${toolCount} site tools connected` : `${toolDefinitions.length} tools ready · preview`}
             </span>
             <button className="button button-prompt" onClick={copyPrompt}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? "Copied" : "Copy demo prompt"}</button>
+            <span className="visually-hidden" role="status">{copied ? "Demo prompt copied to clipboard." : ""}</span>
           </div>
         </header>
 
