@@ -2,6 +2,7 @@ import type {
   AppealGround,
   Decision,
   DemoCase,
+  InvocationOrigin,
   LedgerEntry,
   RawField,
   ScenarioInput,
@@ -14,6 +15,7 @@ export type GateRequest =
   | { kind: "export"; reason: string };
 
 export type ToolRuntime = {
+  origin: InvocationOrigin;
   load: () => Promise<DemoCase>;
   save: (caseData: DemoCase) => Promise<void>;
   appendLedger: (entry: LedgerEntry) => Promise<void>;
@@ -48,6 +50,7 @@ export function createToolHandlers(runtime: ToolRuntime) {
       kind: "invocation",
       ts: Date.now(),
       tool,
+      origin: runtime.origin,
       args,
       result,
       bytesOut: byteSize(result),
@@ -117,7 +120,8 @@ export function createToolHandlers(runtime: ToolRuntime) {
       return result;
     },
 
-    async check_rules(_input: Record<string, never> = {}) {
+    async check_rules(input: Record<string, never> = {}) {
+      void input;
       const caseData = await runtime.load();
       const rules = evaluateRules(caseData);
       caseData.ruleResults = rules;

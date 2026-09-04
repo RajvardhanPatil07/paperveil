@@ -24,14 +24,14 @@ The agent receives browser-local capabilities rather than the user's documents. 
 
 ## Operating Context
 
-The product runs as a top-level page in ChatGPT's in-app browser or a WebMCP-enabled Chrome session. It ships with one deterministic, synthetic $4,200 claim and a fictional policy pack for a reliable demonstration.
+The product runs as a top-level page in ChatGPT's in-app browser or a WebMCP-enabled Chrome session. It ships with two deterministic synthetic claims and a fictional policy pack, proving the same seven tools can operate on more than one case while keeping the demonstration reliable.
 
 ## Capabilities and Constraints
 
 - Seven imperative WebMCP tools share the same domain logic as the human interface.
 - Raw identifiers and their token map remain in IndexedDB unless the user approves one explicit disclosure.
 - Tool results are sealed with per-tool allowlists and scanned for known identifiers.
-- No backend, authentication, OCR, real document upload, external AI API, second rule pack, or multiple cases.
+- No backend, authentication, OCR, real document upload, external AI API, or second rule pack.
 - A disclosure request auto-denies after 20 seconds.
 - The product demonstrates disclosure minimization, not anonymity, HIPAA compliance, legal advice, or guaranteed appeal outcomes.
 

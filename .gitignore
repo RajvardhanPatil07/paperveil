@@ -6,5 +6,9 @@ playwright-report
 test-results
 .vercel
 .impeccable/review
+.impeccable/critique
+remotion-video
+voice
+*.mp4
 .DS_Store
 *.tsbuildinfo

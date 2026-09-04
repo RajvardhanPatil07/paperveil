@@ -1,6 +1,7 @@
 export type RawField = "patient_name" | "date_of_birth" | "member_id" | "address";
 export type RuleStatus = "pass" | "fail" | "needs_evidence";
 export type Decision = "approved" | "denied" | "timeout";
+export type InvocationOrigin = "webmcp" | "human-ui";
 
 export type EvidenceDocument = {
   id: string;
@@ -74,6 +75,7 @@ export type InvocationEntry = {
   kind: "invocation";
   ts: number;
   tool: string;
+  origin: InvocationOrigin;
   args: unknown;
   result: unknown;
   bytesOut: number;
@@ -94,6 +96,7 @@ export type DemoCase = {
   denialCode: string;
   denialReason: string;
   appealDeadline: string;
+  asOfDate: string;
   rawIdentifiers: Record<RawField, string>;
   tokens: Record<RawField, string>;
   documents: EvidenceDocument[];

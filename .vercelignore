@@ -1,0 +1,11 @@
+.git
+.github
+.impeccable
+coverage
+docs
+playwright-report
+remotion-video
+test-results
+tests
+voice
+*.mp4

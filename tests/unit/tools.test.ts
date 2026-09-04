@@ -14,6 +14,7 @@ describe("PaperVeil tool contracts", () => {
 
   function runtime(decision: Decision = "denied") {
     return createToolHandlers({
+      origin: "human-ui",
       load: async () => current,
       save: async (next) => {
         current = structuredClone(next);
@@ -37,7 +38,7 @@ describe("PaperVeil tool contracts", () => {
 
     expect(result).toEqual({ granted: false, decision: "denied", useToken: "[[DOB]]" });
     expect(JSON.stringify(result)).not.toContain(current.rawIdentifiers.date_of_birth);
-    expect(current.ledger.at(-1)).toMatchObject({ decision: "denied", rawFieldsReleased: [] });
+    expect(current.ledger.at(-1)).toMatchObject({ origin: "human-ui", decision: "denied", rawFieldsReleased: [] });
   });
 
   it("releases exactly one approved identifier", async () => {

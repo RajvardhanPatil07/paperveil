@@ -1,0 +1,38 @@
+{
+  "id": "PV-2026-117",
+  "title": "Post-surgical therapy appeal",
+  "status": "reviewing",
+  "insurer": "Northstar Health (fictional)",
+  "claimAmount": 3150,
+  "denialCode": "CO-50",
+  "denialReason": "Service lacks referral documentation",
+  "appealDeadline": "2026-11-12",
+  "asOfDate": "2026-09-03",
+  "rawIdentifiers": {
+    "patient_name": "Jonah Reyes",
+    "date_of_birth": "1979-11-06",
+    "member_id": "NSH-2194-7702",
+    "address": "442 Alder Avenue, Denver, CO 80206"
+  },
+  "tokens": {
+    "patient_name": "[[NAME]]",
+    "date_of_birth": "[[DOB]]",
+    "member_id": "[[MEMBER_ID]]",
+    "address": "[[ADDRESS]]"
+  },
+  "documents": [
+    { "id": "doc-eob-therapy", "kind": "eob", "title": "Explanation of benefits", "receivedAt": "2026-08-28", "pages": 4, "summary": "EOB for [[NAME]] lists a $3,150 therapy claim and $1,200 patient responsibility.", "present": true },
+    { "id": "doc-denial-therapy", "kind": "denial_letter", "title": "Claim denial notice", "receivedAt": "2026-08-30", "pages": 2, "summary": "Denial code CO-50 cites missing referral documentation.", "present": true },
+    { "id": "doc-referral-therapy", "kind": "referral", "title": "Surgical therapy referral", "receivedAt": "", "pages": 0, "summary": "Not yet obtained.", "present": false },
+    { "id": "doc-itemized-therapy", "kind": "itemized_bill", "title": "Itemized therapy bill", "receivedAt": "2026-08-29", "pages": 3, "summary": "Itemized bill lists six post-surgical therapy sessions.", "present": true }
+  ],
+  "lineItems": [
+    { "id": "therapy-line-1", "serviceDate": "2026-07-18", "code": "97110", "description": "Therapeutic exercise sessions", "billed": 1500, "allowed": 1080, "patientOwes": 600 },
+    { "id": "therapy-line-2", "serviceDate": "2026-07-25", "code": "97140", "description": "Manual therapy sessions", "billed": 1050, "allowed": 720, "patientOwes": 420 },
+    { "id": "therapy-line-3", "serviceDate": "2026-08-01", "code": "97530", "description": "Therapeutic activities", "billed": 600, "allowed": 420, "patientOwes": 180 }
+  ],
+  "ruleResults": [],
+  "scenarios": [],
+  "draft": null,
+  "ledger": []
+}

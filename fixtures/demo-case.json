@@ -7,6 +7,7 @@
   "denialCode": "CO-16",
   "denialReason": "Missing or incomplete information",
   "appealDeadline": "2026-10-18",
+  "asOfDate": "2026-09-03",
   "rawIdentifiers": {
     "patient_name": "Maya Chen",
     "date_of_birth": "1988-04-12",

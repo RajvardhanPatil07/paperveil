@@ -57,7 +57,7 @@ export function evaluateRules(caseData: DemoCase): RuleResult[] {
     {
       ruleId: "MB-050",
       title: "Appeal window remains open",
-      status: new Date(caseData.appealDeadline).getTime() > new Date("2026-09-02").getTime() ? "pass" : "fail",
+      status: new Date(caseData.appealDeadline).getTime() > new Date(caseData.asOfDate).getTime() ? "pass" : "fail",
       because: `The fictional policy deadline is ${caseData.appealDeadline}.`,
       action: "Submit before the date printed on the denial notice.",
       source: source("§7.1 Internal appeal window"),
@@ -66,7 +66,7 @@ export function evaluateRules(caseData: DemoCase): RuleResult[] {
       ruleId: "MB-061",
       title: "Claim total reconciles",
       status: caseData.lineItems.reduce((total, item) => total + item.billed, 0) === caseData.claimAmount ? "pass" : "fail",
-      because: "The three listed charges total $4,200, matching the claim face value.",
+      because: `The ${caseData.lineItems.length} listed charges total ${money(caseData.claimAmount)}, matching the claim face value.`,
       action: "Keep the line-item total visible in the cover sheet.",
       source: source("§5.1 Claim totals"),
     },
@@ -105,7 +105,9 @@ export function simulateScenarios(caseData: DemoCase, scenarios: ScenarioInput[]
       label: scenario.label,
       readiness: Math.round((passed / after.length) * 100),
       resolvedRules,
-      amountClarified: scenario.changes.includes("remove_duplicate") ? 850 : 0,
+      amountClarified: scenario.changes.includes("remove_duplicate")
+        ? caseData.lineItems.find((item) => item.suspectedDuplicate)?.patientOwes ?? 0
+        : 0,
     };
   });
 }

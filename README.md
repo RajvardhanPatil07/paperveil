@@ -2,17 +2,30 @@
 
 **The agent gets capabilities, not your identity.**
 
-PaperVeil is a local-first medical-claim appeal desk built for the 2026 OpenAI WebMCP Challenge. It gives an agent seven narrow tools for checking a fictional claim, comparing evidence scenarios, and preparing an appeal—while raw identity remains in IndexedDB unless the user approves one explicit disclosure.
+PaperVeil is a local-first medical-claim appeal desk built for the 2026 OpenAI WebMCP Challenge. It gives an agent seven narrow tools for checking two fictional case packs, comparing evidence scenarios, and preparing an appeal—while raw identity remains in IndexedDB unless the user approves one explicit disclosure.
 
-**Live demo:** [paperveil-two.vercel.app](https://paperveil-two.vercel.app)
+**[Launch the live demo](https://paperveil-two.vercel.app)** · [Read the submission notes](./docs/SUBMISSION.md) · [Watch the demo flow](./docs/VIDEO_SCRIPT.md)
+
+![PaperVeil strategy workspace with its inspectable disclosure ledger](./public/paperveil-hero.jpg)
 
 > Synthetic demonstration only. The policy, patient, insurer, and claim are fictional. PaperVeil is not medical or legal advice and does not promise an appeal outcome.
+
+## At a glance
+
+| | |
+| --- | --- |
+| **Problem** | Claim appeals require useful reasoning over highly sensitive records. |
+| **Approach** | Keep the case in the browser and expose seven narrowly scoped WebMCP capabilities. |
+| **Privacy boundary** | Raw identifiers cannot enter a tool result unless the user approves that exact field. |
+| **Human control** | Disclosure and personalized export each require an explicit browser-side decision. |
+| **Auditability** | The ledger records tool arguments, exact bounded results, bytes, identifier classes, and gate decisions. |
+| **Stack** | Next.js 16, React 19, TypeScript, IndexedDB, WebMCP, Vitest, and Playwright. |
 
 ## Why this use case is a strong fit for WebMCP
 
 Claim appeals combine structured reasoning with extremely sensitive documents. A remote tool server normally requires those documents to leave the browser. PaperVeil instead exposes browser-local capabilities: the agent asks the page to run rules, search line items, compare scenarios, and save an argument structure.
 
-The WebMCP boundary becomes a disclosure boundary. Every invocation appears in a ledger with its arguments, exact result, byte count, raw fields released, quasi-identifier categories exposed, and human-gate decision.
+The WebMCP boundary becomes a disclosure boundary. Every event is labeled as either a WebMCP agent call or a human fallback action. Agent rows show their arguments, exact result, byte count, raw fields released, quasi-identifier categories exposed, and human-gate decision; tool registrations are summarized separately.
 
 The need is concrete. KFF reports that Marketplace insurers denied 19% of in-network claims in 2024; fewer than 1% of denied claims were appealed, and insurers upheld 66% of the appeals that were filed. [Read the KFF analysis](https://www.kff.org/patient-consumer-protections/claims-denials-and-appeals-in-aca-marketplace-plans-in-2024/). CMS explains that many consumers have rights to internal appeal and, where applicable, external review. [Read the CMS guidance](https://www.cms.gov/cciio/resources/fact-sheets-and-faqs/appeals06152012a).
 
@@ -49,7 +62,11 @@ if (typeof document.modelContext?.registerTool === "function") {
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: {
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+    },
     execute: async () => handlers.check_rules({}),
   });
 }
@@ -88,6 +105,8 @@ flowchart LR
 
 ### Run it locally
 
+Requirements: Node.js 20.9 or newer and a modern browser.
+
 ```bash
 npm install
 npm run dev
@@ -106,13 +125,14 @@ npm run build
 1. Open the deployed app directly in ChatGPT's in-app browser.
 2. Use GPT-5.6 Sol or GPT-5.6 Terra; site tools are currently disabled on Luna.
 3. Confirm **Enable site tools** is on under **Settings → Browser → Permissions**.
-4. Copy the demo prompt from the app and send it:
+4. Copy the deterministic judge prompt from the app and send it. It asks the agent to inspect the case, compare scenarios, request only DOB to demonstrate the gate, and continue with a token after denial.
 
-   > Review this denied claim, identify fixable paperwork defects, compare my options, and prepare an appeal without requesting personal identifiers unless strictly necessary.
+   > Use the PaperVeil site tools to review this denied claim. First list the evidence and run the policy checks. Compare filing now with adding the missing evidence and reconciling any duplicate charge. Then request only date_of_birth for the appeal header so I can demonstrate the privacy gate. If I deny it, continue with [[DOB]] and draft the appeal anyway. Do not request any other raw identifier and do not export until I ask.
 
 5. When `request_disclosure` asks for date of birth, click **Deny · use token**.
 6. Open the Packet view and compare the receipt, tokenized local draft, and optional local reveal.
 7. Expand the latest ledger entry to inspect the exact returned bytes.
+8. Switch to the second synthetic case from the case selector to verify that the same seven tools operate on a different evidence profile.
 
 For Chrome testing, enable `chrome://flags/#enable-webmcp-testing` and use the Model Context Tool Inspector extension. ChatGPT currently requires imperative registration in the top-level page; declarative and iframe-registered tools are not discovered. [Official OpenAI site-tools documentation](https://learn.chatgpt.com/docs/webmcp)
 

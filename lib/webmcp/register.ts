@@ -13,6 +13,17 @@ import {
 const rawFields: RawField[] = ["patient_name", "date_of_birth", "member_id", "address"];
 
 export const browserToolHandlers = createToolHandlers({
+  origin: "webmcp",
+  load: loadDemoCase,
+  save: saveDemoCase,
+  appendLedger: appendLedgerEntry,
+  gate: requestHumanGate,
+  download: downloadPacket,
+  notify: announceStateChange,
+});
+
+export const humanToolHandlers = createToolHandlers({
+  origin: "human-ui",
   load: loadDemoCase,
   save: saveDemoCase,
   appendLedger: appendLedgerEntry,
@@ -54,12 +65,12 @@ export const toolDefinitions = [
     name: "check_rules",
     description: "Evaluate the fictional policy pack against local evidence. Returns checkable defects and source labels without identity.",
     inputSchema: emptySchema,
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
     execute: browserToolHandlers.check_rules,
   },
   {
     name: "simulate_outcomes",
-    description: "Compare one to four hypothetical evidence changes and show readiness deltas without modifying the stored case.",
+    description: "Compare one to four hypothetical evidence changes, save the comparison for the shared UI, and leave the underlying evidence unchanged.",
     inputSchema: {
       type: "object",
       properties: {
@@ -85,7 +96,7 @@ export const toolDefinitions = [
       required: ["scenarios"],
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
     execute: browserToolHandlers.simulate_outcomes,
   },
   {
@@ -151,25 +162,9 @@ export async function registerPaperVeilTools(signal: AbortSignal) {
 
   for (const tool of toolDefinitions) {
     await document.modelContext.registerTool(tool as never, { signal });
-    await appendLedgerEntry({
-      id: crypto.randomUUID(),
-      kind: "registration",
-      ts: Date.now(),
-      tool: tool.name,
-      descriptionHash: hashDescription(tool.description),
-    });
   }
   announceStateChange();
   return toolDefinitions.length;
-}
-
-function hashDescription(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return `fnv1a-${(hash >>> 0).toString(16).padStart(8, "0")}`;
 }
 
 async function downloadPacket(contents: string, format: "txt" | "pdf") {

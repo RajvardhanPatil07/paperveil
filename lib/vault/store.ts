@@ -2,15 +2,35 @@
 
 import { openDB } from "idb";
 import fixture from "@/fixtures/demo-case.json";
+import therapyFixture from "@/fixtures/demo-case-therapy.json";
 import type { DemoCase, LedgerEntry } from "@/lib/domain/types";
 
 const DB_NAME = "paperveil-vault";
 const STORE_NAME = "cases";
-const DEMO_ID = "PV-2026-042";
+const DEFAULT_DEMO_ID = "PV-2026-042";
+const ACTIVE_CASE_KEY = "paperveil-active-case";
+const fixtures = {
+  [fixture.id]: fixture,
+  [therapyFixture.id]: therapyFixture,
+} as const;
+let fallbackActiveCaseId = DEFAULT_DEMO_ID;
 
-function freshFixture(): DemoCase {
-  return structuredClone(fixture) as DemoCase;
+function activeCaseId() {
+  if (typeof window === "undefined") return fallbackActiveCaseId;
+  try {
+    const stored = window.localStorage?.getItem(ACTIVE_CASE_KEY);
+    return stored && stored in fixtures ? stored : fallbackActiveCaseId;
+  } catch {
+    return fallbackActiveCaseId;
+  }
 }
+
+function freshFixture(caseId = activeCaseId()): DemoCase {
+  const source = fixtures[caseId as keyof typeof fixtures] ?? fixture;
+  return structuredClone(source) as DemoCase;
+}
+
+export const demoCaseOptions = Object.values(fixtures).map(({ id, title }) => ({ id, title }));
 
 async function database() {
   return openDB(DB_NAME, 1, {
@@ -23,11 +43,29 @@ async function database() {
 export async function loadDemoCase(): Promise<DemoCase> {
   if (typeof indexedDB === "undefined") return freshFixture();
   const db = await database();
-  const existing = (await db.get(STORE_NAME, DEMO_ID)) as DemoCase | undefined;
-  if (existing) return existing;
-  const seeded = freshFixture();
+  const caseId = activeCaseId();
+  const existing = (await db.get(STORE_NAME, caseId)) as DemoCase | undefined;
+  if (existing) {
+    const normalized = { ...freshFixture(caseId), ...existing };
+    if (!existing.asOfDate) await db.put(STORE_NAME, normalized);
+    return normalized;
+  }
+  const seeded = freshFixture(caseId);
   await db.put(STORE_NAME, seeded);
   return seeded;
+}
+
+export async function selectDemoCase(caseId: string) {
+  if (!(caseId in fixtures)) throw new Error("Unknown demo case.");
+  fallbackActiveCaseId = caseId;
+  try {
+    window.localStorage?.setItem(ACTIVE_CASE_KEY, caseId);
+  } catch {
+    // The in-memory selection still works when browser storage is unavailable.
+  }
+  const selected = await loadDemoCase();
+  announceStateChange();
+  return selected;
 }
 
 export async function saveDemoCase(caseData: DemoCase) {
