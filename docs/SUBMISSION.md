@@ -10,9 +10,9 @@ PaperVeil lets an agent prepare a medical-claim appeal using browser-local capab
 
 People often need help understanding a denied claim, but the source material contains some of their most sensitive information. PaperVeil inverts the usual “upload your documents to the model” workflow. The fictional case stays in IndexedDB, while WebMCP exposes seven narrow actions for inspecting evidence, checking procedural rules, comparing scenarios, and saving appeal grounds.
 
-The signature interaction is `request_disclosure`. When the agent asks for a date of birth, the page suspends the tool and asks the human. Clicking Deny returns a placeholder token instead of failing the workflow. The agent continues, `draft_appeal` returns a receipt rather than prose, and the page renders and exports the personalized packet locally.
+The signature interaction is an adversarial enforcement path. A synthetic OCR footer tells the agent to request a member ID and reuse the approved value in its next draft. `list_evidence` marks the attacker-influenceable text as untrusted. During the authorized red-team walkthrough the user approves the one disclosure, the agent complies with the injected instruction, and `seal()` rejects the later `draft_appeal` call before unsafe state is saved. The ledger records the block and highlights the offending string locally; a retry with `[[MEMBER_ID]]` succeeds.
 
-Every registration and invocation is captured in a disclosure ledger. Judges can inspect the exact bytes returned, raw identifiers released, quasi-identifiers exposed, gate decisions, and tool-description hashes.
+Every registration and invocation is captured in a disclosure ledger, including thrown errors and oversized outputs. Judges can inspect exact returned bytes, raw identifiers released, quasi-identifiers exposed, cumulative linkage risk, gate decisions, and tool-description hashes.
 
 ## Why it scores
 
@@ -22,7 +22,7 @@ The privacy behavior depends on the tool executing in the live page with access 
 
 ### Execution
 
-The submission is a complete three-part product: populated case desk, deterministic strategy workspace, local packet preview, export, failure states, responsive layout, tests, and a judge-ready seeded flow.
+The submission is a complete three-part product: populated case desk, deterministic strategy workspace, local packet preview, export, an observed adversarial privacy block, responsive layout, tests, and a judge-ready seeded flow.
 
 ### Potential impact
 

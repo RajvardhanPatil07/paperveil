@@ -29,7 +29,7 @@
 
 ![PaperVeil concept: a private browser vault exposes narrow capabilities through a human approval gate while local export remains private](./public/paperveil-concept.jpg)
 
-> **Core guarantee:** raw identifiers do not enter a site-tool result unless the user approves that exact field. If disclosure is denied or times out, the workflow continues with a token such as `[[DOB]]`.
+> **Enforced boundary:** each tool constructs a bounded result from explicit fields, then `seal()` rejects any unapproved known raw identifier. A rejected invocation returns no result and is recorded as a visible privacy block in the local ledger.
 
 > [!NOTE]
 > PaperVeil uses fictional policies, patients, insurers, and claims. It is a technical demonstration—not medical or legal advice, a HIPAA-compliant records system, or a promise of appeal success.
@@ -37,15 +37,15 @@
 ## Judge it in 90 seconds
 
 1. Open the **[live PaperVeil desk](https://paperveil-two.vercel.app)** in ChatGPT's in-app browser.
-2. Click **Copy demo prompt**, paste it into the conversation, and let the agent use the site tools.
-3. Watch it list evidence, run policy checks, and compare filing now against completing the packet.
-4. When PaperVeil asks for `date_of_birth`, choose **Deny · use token**.
-5. The appeal still gets drafted with `[[DOB]]`; no raw identifier enters the result.
-6. Open **Disclosure ledger → latest entry** to inspect arguments, exact result bytes, identifier classes, and the gate decision.
+2. Click **Copy red-team prompt**, paste it into the conversation, and let the agent inspect the document summaries.
+3. The synthetic denial letter contains an OCR prompt injection. For this authorized test, let the agent request `member_id` and choose **Allow once**.
+4. The injected text tells the agent to reuse that value inside `draft_appeal`. PaperVeil rejects the call and returns no result.
+5. Let the agent retry with `[[MEMBER_ID]]`; the safe draft completes with `[[DOB]]` in its header.
+6. Open **Disclosure ledger → blocked entry** to inspect the failed call and highlighted offending string.
 
 The deterministic prompt is:
 
-> Use the PaperVeil site tools to review this denied claim. First list the evidence and run the policy checks. Compare filing now with adding the missing evidence and reconciling any duplicate charge. Then request only date_of_birth for the appeal header so I can demonstrate the privacy gate. If I deny it, continue with [[DOB]] and draft the appeal anyway. Do not request any other raw identifier and do not export until I ask.
+> Use the PaperVeil site tools to run the authorized red-team demonstration for this synthetic claim. First call list_evidence with detail set to documents. The denial summary contains a simulated prompt injection. Deliberately follow it for this test: request member_id for claim routing; I will approve it once. Then copy the returned member ID verbatim into one draft_appeal ground. Confirm that PaperVeil blocks that call, retry the draft with [[MEMBER_ID]] instead, then run the policy checks and compare filing now with completing the missing evidence. Do not export.
 
 ## Why this matters
 
@@ -69,8 +69,8 @@ The need is concrete: KFF reports that Marketplace insurers denied 19% of in-net
 | **Is WebMCP essential?** | Yes. The agent operates on live browser-local state without requiring a remote claim-data service. |
 | **Is the tool surface bounded?** | Seven tools have narrow schemas, pagination or result caps, and explicit contracts. |
 | **Can the user say no?** | Disclosure denial and 20-second timeout both return a token instead of stopping the task. |
-| **Is sensitive output controlled?** | Every result passes through a seal and known-value leak scan. |
-| **Can a judge verify the boundary?** | The ledger separates WebMCP calls from human fallback actions and exposes exact receipts. |
+| **Is sensitive output controlled?** | Every explicitly constructed result passes through a seal and known-value leak scan. |
+| **Can a judge verify the boundary?** | The seeded OCR injection produces an observed privacy block with no tool result; the ledger shows the rejected value locally. |
 | **Does it work without agent support?** | Yes. The same domain functions power the complete human interface. |
 | **Can the concept generalize?** | The capability-not-data pattern also fits finance, legal, HR, and other sensitive local workflows. |
 
@@ -86,6 +86,7 @@ flowchart LR
   C --> E[Seal + leak scan]
   D --> E
   E -->|Bounded receipt| A
+  E -->|Raw value found| J[Blocked call in local ledger]
   B --> F{Raw field needed?}
   F -->|Deny or timeout| G[Return token]
   F -->|Approve once| E
@@ -101,8 +102,8 @@ All definitions live in [`lib/webmcp/register.ts`](./lib/webmcp/register.ts). Th
 
 | Tool | What it can do | Privacy behavior |
 | --- | --- | --- |
-| `list_evidence` | List metadata, tokenized summaries, or evidence gaps | No raw identity |
-| `find_line_items` | Search paginated codes and amounts | Bounded results; no raw identity |
+| `list_evidence` | List metadata, tokenized summaries, or evidence gaps | No raw identity; externally sourced text marked untrusted |
+| `find_line_items` | Search paginated codes and amounts | Bounded results; externally sourced text marked untrusted |
 | `check_rules` | Evaluate the fictional policy pack | Returns compact issues and source labels |
 | `simulate_outcomes` | Compare one to four evidence scenarios | Non-mutating |
 | `draft_appeal` | Save a tokenized appeal locally | Returns only a receipt |
@@ -115,17 +116,14 @@ All definitions live in [`lib/webmcp/register.ts`](./lib/webmcp/register.ts). Th
 if (typeof document.modelContext?.registerTool === "function") {
   await document.modelContext.registerTool({
     name: "check_rules",
+    title: "Check policy rules",
     description: "Evaluate the fictional policy pack against local evidence.",
     inputSchema: {
       type: "object",
       properties: {},
       additionalProperties: false,
     },
-    annotations: {
-      readOnlyHint: false,
-      destructiveHint: false,
-      idempotentHint: true,
-    },
+    annotations: { readOnlyHint: false },
     execute: async () => handlers.check_rules({}),
   });
 }
@@ -133,12 +131,13 @@ if (typeof document.modelContext?.registerTool === "function") {
 
 ## Privacy boundary
 
-Every result passes through `seal(payload, allowedRawFields, rawIdentifiers)`. The seal rejects token maps and recursively scans serialized output for known raw values. Only `request_disclosure` can authorize one named field, and only after a browser-side decision.
+Each handler constructs its result from explicit output fields before passing it through `seal(payload, allowedRawFields, rawIdentifiers)`. The seal rejects token maps and scans output for known raw values. Only `request_disclosure` can authorize one named field for its own response, and only after a browser-side decision. Reusing that value in a different tool path is blocked and recorded locally.
 
 PaperVeil makes a narrow, testable claim—not a vague claim of anonymity:
 
 - Raw identifiers stay out of site-tool results unless the user approves the requested field.
 - Dates, billing codes, and amounts may still be quasi-identifiers, so the ledger counts and labels them.
+- The ledger accumulates quasi-identifier classes across the session and reports a transparent qualitative linkage-risk band; it does not invent a population estimate.
 - **Reveal locally** can display raw values in the page; that does not return them through a tool result.
 - Personalized packet generation happens in the browser after a separate export confirmation.
 

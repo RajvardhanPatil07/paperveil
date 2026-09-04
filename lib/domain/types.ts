@@ -2,6 +2,7 @@ export type RawField = "patient_name" | "date_of_birth" | "member_id" | "address
 export type RuleStatus = "pass" | "fail" | "needs_evidence";
 export type Decision = "approved" | "denied" | "timeout";
 export type InvocationOrigin = "webmcp" | "human-ui";
+export type InvocationOutcome = "success" | "blocked" | "error";
 
 export type EvidenceDocument = {
   id: string;
@@ -78,6 +79,13 @@ export type InvocationEntry = {
   origin: InvocationOrigin;
   args: unknown;
   result: unknown;
+  outcome: InvocationOutcome;
+  error?: {
+    code: "privacy_boundary" | "output_budget" | "tool_error";
+    message: string;
+    rawField?: RawField;
+    offendingValue?: string;
+  };
   bytesOut: number;
   rawFieldsReleased: RawField[];
   quasiFieldsExposed: string[];

@@ -2,7 +2,7 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import { toast } from "sonner";
-import { Braces, ChevronDown, Copy, Download, EyeOff, Fingerprint, Radio, ShieldCheck } from "lucide-react";
+import { Braces, ChevronDown, Copy, Download, EyeOff, Fingerprint, Radio, ShieldAlert, ShieldCheck } from "lucide-react";
 import type { DemoCase, InvocationEntry } from "@/lib/domain/types";
 import { PaperTooltip } from "@/components/ui/PaperTooltip";
 
@@ -11,6 +11,8 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
   const agentInvocations = invocations.filter((entry) => entry.origin === "webmcp");
   const released = new Set(agentInvocations.flatMap((entry) => entry.rawFieldsReleased));
   const quasi = new Set(agentInvocations.flatMap((entry) => entry.quasiFieldsExposed));
+  const linkage = linkageRisk(quasi);
+  const blocked = agentInvocations.filter((entry) => entry.outcome === "blocked").length;
   const visible = invocations.slice(-8).reverse();
 
   const exportLedger = () => {
@@ -57,8 +59,14 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
       </div>
 
       <div className="ledger-proof">
-        <ShieldCheck size={18} />
-        <p><strong>The boundary is inspectable.</strong> Agent calls and human fallback actions are labeled separately. Only agent calls crossed WebMCP.</p>
+        {blocked ? <ShieldAlert size={18} /> : <ShieldCheck size={18} />}
+        <p><strong>{blocked ? `${blocked} privacy block${blocked === 1 ? "" : "s"} observed.` : "The boundary is inspectable."}</strong> Successful and rejected calls remain separately visible in this browser.</p>
+      </div>
+
+      <div className={`linkage-assessment ${linkage.level}`}>
+        <span>Cumulative linkage risk</span>
+        <strong>{linkage.label}</strong>
+        <small>{linkage.detail}</small>
       </div>
 
       <div className="registration-summary">
@@ -77,7 +85,13 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
           visible.map((entry) => {
             const receipt = JSON.stringify(entry.result, null, 2);
             const args = JSON.stringify(entry.args, null, 2);
-            const state = entry.decision ? entry.decision.toUpperCase() : entry.origin === "webmcp" ? "AGENT CALLED" : "HUMAN RAN";
+            const state = entry.outcome === "blocked"
+              ? "BLOCKED"
+              : entry.outcome === "error"
+                ? "FAILED"
+                : entry.decision
+                  ? entry.decision.toUpperCase()
+                  : entry.origin === "webmcp" ? "AGENT CALLED" : "HUMAN RAN";
             return (
             <Accordion.Item className="ledger-entry" key={entry.id} value={entry.id}>
               <Accordion.Header>
@@ -87,7 +101,7 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
                   <strong>{entry.tool}</strong>
                   <small>{entry.origin === "webmcp" ? "WebMCP agent" : "Human fallback"}</small>
                 </span>
-                <span className={`entry-state ${entry.decision ?? entry.origin}`}>{state}</span>
+                <span className={`entry-state ${entry.outcome ?? entry.decision ?? entry.origin}`}>{state}</span>
                 <time>{new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</time>
                 <ChevronDown className="accordion-chevron" size={14} aria-hidden="true" />
                 </Accordion.Trigger>
@@ -98,6 +112,17 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
                   <div><dt>Raw fields</dt><dd>{entry.rawFieldsReleased.length ? entry.rawFieldsReleased.join(", ") : "none"}</dd></div>
                   <div><dt>Quasi types</dt><dd>{entry.quasiFieldsExposed.length || "none"}</dd></div>
                 </dl>
+                {entry.outcome === "blocked" && entry.error ? (
+                  <div className="blocked-proof" role="note">
+                    <ShieldAlert size={16} />
+                    <div>
+                      <strong>{entry.error.message}</strong>
+                      {entry.error.offendingValue ? <p>Offending string: <mark>{entry.error.offendingValue}</mark></p> : null}
+                    </div>
+                  </div>
+                ) : entry.outcome === "error" && entry.error ? (
+                  <div className="failed-proof" role="note"><strong>Tool failed:</strong> {entry.error.message}</div>
+                ) : null}
                 <div className="receipt-toolbar"><span>Tool arguments</span></div>
                 <pre>{args}</pre>
                 <div className="receipt-toolbar">
@@ -125,4 +150,27 @@ export function LedgerRail({ caseData, registeredToolCount }: { caseData: DemoCa
       </footer>
     </aside>
   );
+}
+
+function linkageRisk(fields: Set<string>) {
+  const count = fields.size;
+  if (count >= 5) {
+    return {
+      level: "elevated",
+      label: "Elevated",
+      detail: `${count} quasi-identifier types accumulated. Dates, codes, and amounts can become identifying in combination.`,
+    };
+  }
+  if (count >= 3) {
+    return {
+      level: "moderate",
+      label: "Moderate",
+      detail: `${count} quasi-identifier types accumulated across this session.`,
+    };
+  }
+  return {
+    level: "low",
+    label: count ? "Low" : "Not observed",
+    detail: count ? `${count} quasi-identifier type${count === 1 ? "" : "s"} observed so far.` : "No agent-visible quasi-identifiers have been recorded.",
+  };
 }

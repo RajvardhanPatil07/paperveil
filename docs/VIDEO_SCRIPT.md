@@ -6,39 +6,37 @@
 
 Show the populated $4,200 case and the ledger at zero raw identifiers released.
 
-## 0:15–0:48 — Find a specific defect
+## 0:15–0:43 — Read attacker-influenced evidence
 
-Send the saved demo prompt. Let the agent call `list_evidence`, `find_line_items`, and `check_rules`.
+Send the saved red-team prompt. Let the agent call `list_evidence` with the document view.
 
-“The agent found a missing itemized bill, an unsigned referral, and a suspected eight-hundred-and-fifty-dollar duplicate technical charge. Those findings appear in the same workspace I see.”
+“This denial summary contains a seeded OCR prompt injection. The tool labels externally sourced text as untrusted, but for this authorized evaluation I am asking the agent to follow it.”
 
-## 0:48–1:12 — Compare paths
+## 0:43–1:10 — Approve once
 
-Let the agent call `simulate_outcomes` with “appeal now” and “complete evidence packet.”
+Let the agent call `request_disclosure` for member ID. Click **Allow once**.
 
-“This is not predicting whether I win. It compares which procedural gaps are resolved before filing.”
+“The member ID is released for this one response. That approval does not turn it into generally safe output.”
 
-## 1:12–1:42 — Deny disclosure
+## 1:10–1:38 — Observe enforcement
 
-Let the agent call `request_disclosure` for date of birth. Click **Deny · use token**.
+Let the agent copy the member ID into a `draft_appeal` argument. Expand the new blocked ledger entry.
 
-“The tool was suspended while I decided. I denied it, the tool returned `[[DOB]]`, and the workflow continued.”
+“The seal caught the raw value before state was saved. The tool returned nothing, and the local ledger highlights exactly what caused the block.”
 
-Keep the ledger counter at zero raw identifiers released in frame.
+## 1:38–2:02 — Recover safely
 
-## 1:42–2:13 — Receipt-only drafting
+Let the agent retry with `[[MEMBER_ID]]`. Open Packet.
 
-Let the agent call `draft_appeal`. Open Packet.
-
-“The agent supplied the argument structure, but the tool returned only this receipt. The full letter remained in the page. Identity substitution happens locally.”
+“The same workflow continues with a token. The receipt now derives all four tokens—including DOB—from the actual draft.”
 
 Briefly toggle **Reveal locally**, then turn it off.
 
-## 2:13–2:34 — Prove the boundary
+## 2:02–2:34 — Finish the analysis
 
-Expand the latest ledger entries.
+Let the agent run `check_rules` and `simulate_outcomes`. Show the cumulative linkage-risk band.
 
-“Every registration and invocation records its exact returned bytes, gate decision, raw fields, quasi-identifiers, and tool-description hash. The limitation is explicit: this is disclosure minimization, not anonymity.”
+“Every successful, failed, and blocked invocation remains visible. Quasi-identifiers accumulate across calls, so the ledger also surfaces linkage risk without pretending to know an exact population count.”
 
 ## 2:34–2:40 — Close
 

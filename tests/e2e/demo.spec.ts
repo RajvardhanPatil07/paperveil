@@ -111,7 +111,7 @@ test("announces copy and local-download feedback without echoing contents", asyn
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/");
 
-  await page.getByRole("button", { name: /copy demo prompt/i }).click();
+  await page.getByRole("button", { name: /copy red-team prompt/i }).click();
   await expect(page.getByText("Demo prompt copied.")).toBeVisible();
 
   const download = page.waitForEvent("download");

@@ -37,17 +37,19 @@ const emptySchema = { type: "object", properties: {}, additionalProperties: fals
 export const toolDefinitions = [
   {
     name: "list_evidence",
+    title: "List case evidence",
     description: "List the local case evidence, tokenized summaries, or missing-evidence gaps. Returns no raw identity fields.",
     inputSchema: {
       type: "object",
       properties: { detail: { type: "string", enum: ["summary", "documents", "gaps"], description: "Evidence view to return." } },
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     execute: browserToolHandlers.list_evidence,
   },
   {
     name: "find_line_items",
+    title: "Find claim line items",
     description: "Find paginated claim line items by code or description. Exposes dates, codes, and amounts but no raw identity.",
     inputSchema: {
       type: "object",
@@ -58,18 +60,20 @@ export const toolDefinitions = [
       },
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     execute: browserToolHandlers.find_line_items,
   },
   {
     name: "check_rules",
+    title: "Check policy rules",
     description: "Evaluate the fictional policy pack against local evidence. Returns checkable defects and source labels without identity.",
     inputSchema: emptySchema,
-    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
+    annotations: { readOnlyHint: false },
     execute: browserToolHandlers.check_rules,
   },
   {
     name: "simulate_outcomes",
+    title: "Compare appeal outcomes",
     description: "Compare one to four hypothetical evidence changes, save the comparison for the shared UI, and leave the underlying evidence unchanged.",
     inputSchema: {
       type: "object",
@@ -96,11 +100,12 @@ export const toolDefinitions = [
       required: ["scenarios"],
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
+    annotations: { readOnlyHint: false },
     execute: browserToolHandlers.simulate_outcomes,
   },
   {
     name: "draft_appeal",
+    title: "Draft tokenized appeal",
     description: "Write an argument structure into the local appeal draft. Returns only a receipt; the personalized letter never enters tool output.",
     inputSchema: {
       type: "object",
@@ -126,11 +131,12 @@ export const toolDefinitions = [
       required: ["grounds"],
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: false, destructiveHint: false },
+    annotations: { readOnlyHint: false },
     execute: browserToolHandlers.draft_appeal,
   },
   {
     name: "request_disclosure",
+    title: "Request identifier disclosure",
     description: "Ask the user to reveal one raw identifier for a stated reason. On denial or timeout, continue with the returned local token.",
     inputSchema: {
       type: "object",
@@ -141,18 +147,19 @@ export const toolDefinitions = [
       required: ["field", "reason"],
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: false, destructiveHint: false },
+    annotations: { readOnlyHint: false, consequentialHint: true },
     execute: browserToolHandlers.request_disclosure,
   },
   {
     name: "export_packet",
+    title: "Export appeal packet",
     description: "Ask for confirmation, personalize the appeal locally, and download it. Returns a receipt, never packet contents.",
     inputSchema: {
       type: "object",
       properties: { format: { type: "string", enum: ["txt", "pdf"], description: "Local download format." } },
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: false, destructiveHint: false },
+    annotations: { readOnlyHint: false, consequentialHint: true },
     execute: browserToolHandlers.export_packet,
   },
 ] as const;

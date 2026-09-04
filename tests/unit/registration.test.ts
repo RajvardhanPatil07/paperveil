@@ -4,7 +4,8 @@ import { registerPaperVeilTools } from "@/lib/webmcp/register";
 
 type RegisteredTool = {
   name: string;
-  annotations?: { readOnlyHint?: boolean };
+  title?: string;
+  annotations?: { readOnlyHint?: boolean; untrustedContentHint?: boolean; consequentialHint?: boolean };
   execute: (input: never) => Promise<unknown>;
 };
 
@@ -38,6 +39,11 @@ describe("WebMCP registration boundary", () => {
     ]);
     expect(registered.find((tool) => tool.name === "check_rules")?.annotations?.readOnlyHint).toBe(false);
     expect(registered.find((tool) => tool.name === "simulate_outcomes")?.annotations?.readOnlyHint).toBe(false);
+    expect(registered.every((tool) => Boolean(tool.title))).toBe(true);
+    expect(registered.find((tool) => tool.name === "list_evidence")?.annotations?.untrustedContentHint).toBe(true);
+    expect(registered.find((tool) => tool.name === "find_line_items")?.annotations?.untrustedContentHint).toBe(true);
+    expect(registered.find((tool) => tool.name === "request_disclosure")?.annotations?.consequentialHint).toBe(true);
+    expect(registered.find((tool) => tool.name === "export_packet")?.annotations?.consequentialHint).toBe(true);
 
     const result = await registered.find((tool) => tool.name === "list_evidence")?.execute({} as never);
     expect(result).toMatchObject({ caseId: fixture.id, documentsPresent: 3 });

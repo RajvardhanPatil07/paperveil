@@ -1,8 +1,13 @@
 type PaperVeilToolDefinition = {
   name: string;
+  title?: string;
   description: string;
   inputSchema: Record<string, unknown>;
-  annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean; idempotentHint?: boolean };
+  annotations?: {
+    readOnlyHint?: boolean;
+    untrustedContentHint?: boolean;
+    consequentialHint?: boolean;
+  };
   execute: (input: never) => Promise<unknown>;
 };
 

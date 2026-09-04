@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fixture from "@/fixtures/demo-case.json";
-import { seal } from "@/lib/vault/redaction";
+import { seal, tokensUsed } from "@/lib/vault/redaction";
 import type { DemoCase } from "@/lib/domain/types";
 
 const demo = fixture as DemoCase;
@@ -22,6 +22,11 @@ describe("seal", () => {
     ).toThrow(/patient_name/);
   });
 
+  it("blocks reformatted member IDs and dates", () => {
+    expect(() => seal({ text: "Member NSH 8841 2937" }, [], demo.rawIdentifiers)).toThrow(/member_id/);
+    expect(() => seal({ text: "Born 04/12/1988" }, [], demo.rawIdentifiers)).toThrow(/date_of_birth/);
+  });
+
   it("releases only an explicitly allowlisted identifier", () => {
     const result = seal(
       { field: "date_of_birth", value: demo.rawIdentifiers.date_of_birth },
@@ -39,5 +44,9 @@ describe("seal", () => {
     expect(() => seal({ metadata: { tokenMap: demo.tokens } }, [], demo.rawIdentifiers)).toThrow(
       /token map/i,
     );
+  });
+
+  it("derives the token receipt from produced text", () => {
+    expect(tokensUsed("[[NAME]] / [[DOB]] / [[NAME]]")).toEqual(["[[NAME]]", "[[DOB]]"]);
   });
 });
